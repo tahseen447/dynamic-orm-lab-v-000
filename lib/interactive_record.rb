@@ -44,5 +44,13 @@ class InteractiveRecord
   end
 
   def values_for_insert
+    values = []
+    self.class.column_names.each do |column_name|
+      values << "'#{send(column_name)}'" unless send(column_name).nil?
   end
+
+  def self.find_by_name(name)
+  sql = "SELECT * FROM #{self.table_name} WHERE name = '#{name}'"
+  DB[:conn].execute(sql)
+end
 end
